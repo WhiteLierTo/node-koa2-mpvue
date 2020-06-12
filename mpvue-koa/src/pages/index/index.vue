@@ -24,6 +24,87 @@
         </block>
       </swiper>
     </div>
+    <div class="channel">
+      <div
+        v-for="(item, index) in channel"
+        :key="index"
+        @click="categroyList(item.id)"
+      >
+        <img :src="item.icon_url" alt="" />
+        <p>{{ item.name }}</p>
+      </div>
+    </div>
+    <div class="brand">
+      <div class="head" @click="tobrandList">
+        品牌制造商直供
+      </div>
+      <div class="content">
+        <div
+          v-for="(item, index) in brandList"
+          :key="index"
+          @click="branddetail(item.id)"
+        >
+          <div>
+            <p>
+              {{ item.name }}
+            </p>
+            <p class="price">{{ item.floor_price }}元</p>
+          </div>
+          <img :src="item.new_pic_url" alt="" />
+        </div>
+      </div>
+    </div>
+    <div class="newgoods">
+      <div class="newgoods-top" @click="goodsList('new')">
+        <div class="top">
+          <p>
+            新品首发
+          </p>
+          <p>
+            查看全部
+          </p>
+        </div>
+      </div>
+      <div class="list">
+        <ul>
+          <scroll-view class="scroll-view" :scroll-x="true">
+            <li v-for="(item, index) in newGoods" :key="index">
+              <img :src="item.list_pic_url" alt="" />
+              <p>{{ item.name }}</p>
+              <p>{{ item.goods_brief }}</p>
+              <p>￥ {{ item.retail_price }}</p>
+            </li>
+          </scroll-view>
+        </ul>
+      </div>
+    </div>
+    <div class="newgoods hotgoods">
+      <div class="newgoods-top" @click="goodsList('hot')">
+        >
+        <div class="top">
+          <p>
+            人气推荐
+            <span></span>
+            好物精选
+          </p>
+          <p>
+            查看全部
+          </p>
+        </div>
+      </div>
+      <div class="list">
+        <ul>
+          <scroll-view class="scroll-view" :scroll-x="true">
+            <li v-for="(item, index) in hotGoods" :key="index">
+              <img :src="item.list_pic_url" alt="" />
+              <p>{{ item.name }}</p>
+              <p>{{ item.goods_brief }}</p>
+              <p>￥ {{ item.retail_price }}</p>
+            </li>
+          </scroll-view>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,11 +115,15 @@ import { get } from "../../utils/index";
 export default {
   data() {
     return {
-      banner: []
+      banner: [],
+      channel: [],
+      brandList: [],
+      newGoods: [],
+      hotGoods: [],
     };
   },
   computed: {
-    ...mapState(["cityName"])
+    ...mapState(["cityName"]),
   },
   mounted() {
     this.getData();
@@ -50,54 +135,84 @@ export default {
       //通过wx.getSetting 先查询一下用户是否授权 “scoped.record”
       let _this = this;
       wx.getSetting({
-        success: res => {
+        success: (res) => {
           //如果没有同意授权，打开设置
           console.log(res);
           if (!res.authSetting["scope.userInfo"]) {
             wx.wx.openSetting({
-              success: res => {
+              success: (res) => {
                 // 获取授权位置信息
                 _this.getCityName();
               },
-              fail: err => {
+              fail: (err) => {
                 console.log(err);
               },
-              complete: () => {}
+              complete: () => {},
             });
           } else {
             wx.navigateTo({
-              url: "/pages/mappage/main"
+              url: "/pages/mappage/main",
             });
             // _this.getCityName();
           }
         },
         fail: () => {},
-        complete: () => {}
+        complete: () => {},
       });
     },
     getCityName() {
       let _this = this;
       var myAmapFun = new amapFile.AMapWX({
-        key: "f1f7413cf9cabc7b69527fa9cfa23fbe"
+        key: "f1f7413cf9cabc7b69527fa9cfa23fbe",
       });
       myAmapFun.getRegeo({
-        success: function(res) {
+        success: function (res) {
           //成功回调
           console.log(res);
         },
-        fail: function(err) {
+        fail: function (err) {
           //失败回调
           console.log(err);
           _this.update({ cityName: "北京" });
-        }
+        },
       });
     },
     async getData() {
       const data = await get("/index/index");
       this.banner = data.banner;
+      this.channel = data.channel;
+      this.brandList = data.brandList;
+      this.newGoods = data.newGoods;
+      this.hotGoods = data.hotGoods;
       console.log(data);
-    }
-  }
+    },
+    categroyList(id) {
+      wx.navigateTo({
+        url: "/pages/categroylist/main?id=" + id,
+      });
+    },
+    branddetail(id) {
+      wx.navigateTo({
+        url: "/pages/branddetail/main?id=" + id,
+      });
+    },
+    tobrandList() {
+      wx.navigateTo({
+        url: "/pages/brandlist/main",
+      });
+    },
+    goodsList(info) {
+      if (info == "hot") {
+        wx.navigateTo({
+          url: "/pages/newgoods/main?isHot=" + 1,
+        });
+      } else {
+        wx.navigateTo({
+          url: "/pages/newgoods/main?isNew=" + 1,
+        });
+      }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

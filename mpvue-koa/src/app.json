@@ -6,7 +6,10 @@
     "pages/cart/main",
     "pages/project/main",
     "pages/classify/main",
-    "pages/mappage/main"
+    "pages/mappage/main",
+    "pages/brandlist/main",
+    "pages/newgoods/main"
+
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -19,8 +22,7 @@
     "backgroundColor": "#fafafa",
     "selectedColor": "#d4237a",
     "borderStyle": "white",
-    "list": [
-      {
+    "list": [{
         "text": "首页",
         "pagePath": "pages/index/main",
         "iconPath": "static/tabs/home.png",
@@ -51,8 +53,7 @@
         "selectedIconPath": "static/tabs/my-active.png"
       }
     ],
-    "items": [
-      {
+    "items": [{
         "name": "首页",
         "pagePath": "pages/index/main",
         "icon": "static/tabs/home.png",
