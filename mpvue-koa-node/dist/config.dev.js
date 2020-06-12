@@ -1,4 +1,6 @@
-const CONF = {
+"use strict";
+
+var CONF = {
   port: "5757",
   mysql: {
     host: "localhost",
@@ -6,8 +8,7 @@ const CONF = {
     user: "root",
     db: "nodemysql",
     pass: "123456",
-    char: "utf8mb4",
-  },
+    "char": "utf8mb4"
+  }
 };
-
 module.exports = CONF;

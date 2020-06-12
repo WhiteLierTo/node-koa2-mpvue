@@ -34,11 +34,15 @@ import { get } from "../../utils/index";
 export default {
   data() {
     return {
-      banner: [],
+      banner: []
     };
   },
   computed: {
-    ...mapState(["cityName"]),
+    ...mapState(["cityName"])
+  },
+  mounted() {
+    this.getData();
+    this.getCityName();
   },
   methods: {
     ...mapMutations(["update"]),
@@ -46,53 +50,54 @@ export default {
       //通过wx.getSetting 先查询一下用户是否授权 “scoped.record”
       let _this = this;
       wx.getSetting({
-        success: (res) => {
+        success: res => {
           //如果没有同意授权，打开设置
           console.log(res);
           if (!res.authSetting["scope.userInfo"]) {
             wx.wx.openSetting({
-              success: (res) => {
+              success: res => {
                 // 获取授权位置信息
                 _this.getCityName();
               },
-              fail: (err) => {
+              fail: err => {
                 console.log(err);
               },
-              complete: () => {},
+              complete: () => {}
             });
           } else {
             wx.navigateTo({
-              url: "/pages/mappage/main",
+              url: "/pages/mappage/main"
             });
             // _this.getCityName();
           }
         },
         fail: () => {},
-        complete: () => {},
+        complete: () => {}
       });
     },
     getCityName() {
       let _this = this;
       var myAmapFun = new amapFile.AMapWX({
-        key: "f1f7413cf9cabc7b69527fa9cfa23fbe",
+        key: "f1f7413cf9cabc7b69527fa9cfa23fbe"
       });
       myAmapFun.getRegeo({
-        success: function (res) {
+        success: function(res) {
           //成功回调
           console.log(res);
         },
-        fail: function (err) {
+        fail: function(err) {
           //失败回调
           console.log(err);
           _this.update({ cityName: "北京" });
-        },
+        }
       });
     },
     async getData() {
       const data = await get("/index/index");
-    },
-  },
-  created() {},
+      this.banner = data.banner;
+      console.log(data);
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
