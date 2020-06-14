@@ -34,11 +34,48 @@ module.exports = async (ctx) => {
     .limit(5)
     .select();
 
+  //专题精选
+  const topiclist = await mysql("nideshop_topic").limit(3).select();
+
+  //类别列表 **好物
+  const categoryList = await mysql("nideshop_category")
+    .where({
+      parent_id: 0,
+    })
+    .select();
+  const newCategoryList = [];
+
+  for (let i = 0; i < categoryList.length; i++) {
+    let item = categoryList[i];
+    let childCategoryIds = await mysql("nideshop_category")
+      .where({
+        parent_id: item.id,
+      })
+      .column("id")
+      .select();
+    //变成数组的形式
+    childCategoryIds = childCategoryIds.map((item) => item.id);
+    console.log(childCategoryIds)
+    // 去商品中找到在childCategoryIds中的符合的数据
+    const categoryGoods = await mysql("nideshop_goods")
+      .column("id", "name", "list_pic_url", "retail_price")
+      .whereIn("category_id", childCategoryIds)
+      .limit(7)
+      .select(); //返回这个几个字段的数据中的category是否存在childCategoryIds中
+    newCategoryList.push({
+      id: item.id,
+      name: item.name,
+      goodsList: categoryGoods,
+    });
+  }
+
   ctx.body = {
     banner: banner,
     channel: channel,
     brandList: brandList,
     newGoods: newGoods,
     hotGoods: hotGoods,
+    topiclist: topiclist,
+    newCategoryList: newCategoryList,
   };
 };

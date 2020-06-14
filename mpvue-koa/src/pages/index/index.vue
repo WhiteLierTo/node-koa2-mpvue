@@ -3,7 +3,7 @@
     <!-- 头部的搜索 -->
     <div class="search">
       <div @click="toMappage">{{ cityName }}</div>
-      <div>
+      <div @click="toSearch">
         <input type="text" placeholder="搜索商品" />
         <span class="icon"></span>
       </div>
@@ -80,7 +80,6 @@
     </div>
     <div class="newgoods hotgoods">
       <div class="newgoods-top" @click="goodsList('hot')">
-        >
         <div class="top">
           <p>
             人气推荐
@@ -105,6 +104,55 @@
         </ul>
       </div>
     </div>
+    <div class="topicList">
+      <div class="topicList-top">
+        专题精选
+        <span class="icon"> </span>
+      </div>
+      <div class="list">
+        <ul>
+          <scroll-view class="scroll-view" :scroll-x="true">
+            <li
+              v-for="(item, index) in topiclist"
+              :key="index"
+              @click="topicdetail(item.id)"
+            >
+              <img :src="item.item_pic_url" alt="" />
+              <div class="btom">
+                <div>
+                  <p>{{ item.title }}</p>
+                  <p>{{ item.subtitle }}</p>
+                </div>
+                <div>{{ item.price_info }}元起</div>
+              </div>
+            </li>
+          </scroll-view>
+        </ul>
+      </div>
+    </div>
+    <div class="newcategory">
+      <div class="list" v-for="(item, index) in newCategoryList" :key="index">
+        <div class="head">{{ item.name }}好物</div>
+
+        <div class="sublist">
+          <div v-for="(subitem, subindex) in item.goodsList" :key="subindex">
+            <img :src="subitem.list_pic_url" alt="" />
+
+            <p>{{ subitem.name }}</p>
+
+            <p>{{ subitem.retail_price }}</p>
+          </div>
+
+          <div>
+            <div class="last">
+              <p>{{ item.name }}好物</p>
+
+              <span class="icon"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -120,6 +168,8 @@ export default {
       brandList: [],
       newGoods: [],
       hotGoods: [],
+      topiclist: [],
+      newCategoryList: [],
     };
   },
   computed: {
@@ -184,7 +234,14 @@ export default {
       this.brandList = data.brandList;
       this.newGoods = data.newGoods;
       this.hotGoods = data.hotGoods;
+      this.topiclist = data.topiclist;
+      this.newCategoryList = data.newCategoryList;
       console.log(data);
+    },
+    toSearch() {
+      wx.navigateTo({
+        url: "/pages/search/main",
+      });
     },
     categroyList(id) {
       wx.navigateTo({
@@ -211,6 +268,11 @@ export default {
           url: "/pages/newgoods/main?isNew=" + 1,
         });
       }
+    },
+    topicdetail(id) {
+      wx.navigateTo({
+        url: "/pages/topicdetail/main?id=" + id,
+      });
     },
   },
 };
