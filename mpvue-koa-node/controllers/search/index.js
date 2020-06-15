@@ -32,6 +32,7 @@ async function indexAction(ctx) {
 //添加搜索历史
 async function addHistoryAction(ctx) {
   const { openId, keyword } = ctx.request.body;
+  console.log(openId, keyword);
   const oldData = await mysql("nideshop_search_history").where({
     user_id: openId,
     keyword: keyword,
