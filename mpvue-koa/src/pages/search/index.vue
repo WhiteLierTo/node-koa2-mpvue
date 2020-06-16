@@ -28,10 +28,13 @@
       </div>
     </div>
     <div class="searchtips" v-if="words">
-      <div>
-        牙刷
+      <div v-if="tipData.length !== 0">
+        <div v-for="(item, index) in tipData" :key="index">
+          {{ item.name }}
+        </div>
       </div>
-      <div class="nogoods">数据库暂时没有此类商品</div>
+
+      <div class="nogoods" v-else>数据库暂时没有此类商品</div>
     </div>
     <div class="history" v-if="historyData.length !== 0">
       <div class="t">
@@ -43,6 +46,7 @@
           v-for="(item, index) in historyData"
           :key="index"
           @click="searchWords"
+          :data-value="item.keyword"
         >
           {{ item.keyword }}
         </div>
@@ -65,6 +69,21 @@
         </div>
       </div>
     </div>
+    <!-- 商品列表 -->
+    <div class="goodsList" v-if="listData.length !== 0">
+      <div class="sortnav">
+        <div>综合</div>
+        <div class="price">价格</div>
+        <div>分类</div>
+      </div>
+      <div class="sortlist">
+        <div class="item" v-for="(item, index) in listData" :key="index">
+          <img :src="item.list_pic_url" alt="" />
+          <p class="name">{{item.name}}</p>
+          <p class="price">￥{{item.retail_price}}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -76,6 +95,9 @@ export default {
       openid: "",
       hotData: [],
       historyData: [],
+      tipData: [],
+      order: "",
+      listData: [],
     };
   },
   mounted() {
@@ -87,7 +109,12 @@ export default {
       this.words = "";
     },
     inputFocus() {},
-    tipsearch() {},
+    async tipsearch() {
+      const data = await get("search/helperaction", {
+        keyword: this.words,
+      });
+      this.tipData = data.keywords;
+    },
     async searchWords(e) {
       let value = e.currentTarget.dataset.value;
       this.words = value || this.words;
@@ -97,15 +124,32 @@ export default {
       });
       //获取历史数据
       this.getHotData();
+      this.getlistData();
     },
     async getHotData(first) {
       const data = await get("/search/indexaction?openId=" + this.openid);
       this.historyData = data.historyData;
       this.hotData = data.hotKeywordList;
-      console.log(data);
     },
     cancel() {},
-    clearHistory() {},
+    async clearHistory() {
+      const data = await post("/search/clearhistoryAction", {
+        openId: this.openid,
+      });
+      if (data) {
+        this.historyData = [];
+      }
+    },
+    //获取商品列表
+    async getlistData() {
+      const data = await get("search/helperaction", {
+        keyword: this.words,
+        order: this.order,
+      });
+      this.listData = data.keywords;
+      this.tipData = [];
+      console.log(data);
+    },
   },
 };
 </script>
