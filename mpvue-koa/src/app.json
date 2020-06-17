@@ -10,7 +10,9 @@
     "pages/brandlist/main",
     "pages/newgoods/main",
     "pages/topicdetail/main",
-    "pages/search/main"
+    "pages/search/main",
+    "pages/goods/main"
+
   ],
   "window": {
     "backgroundTextStyle": "light",
