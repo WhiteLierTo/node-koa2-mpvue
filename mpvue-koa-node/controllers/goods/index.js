@@ -15,7 +15,7 @@ async function detailAction(ctx) {
     goods_id: goodsId,
   });
   ctx.body = {
-    info,
+    info: info[0],
     gallery,
   };
 }
