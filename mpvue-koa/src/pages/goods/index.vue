@@ -37,12 +37,85 @@
       <div>请选择规格数量</div>
       <div></div>
     </div>
+    <!-- 商品参数 -->
+    <div class="attribute">
+      <div class="head">
+        商品参数
+      </div>
+      <div class="item" v-for="(item, index) in attribute" :key="index">
+        <div>{{ item.name }}</div>
+        <div>{{ item.value }}</div>
+      </div>
+    </div>
+    <!-- 图片展示 -->
+    <div class="detail" v-if="goods_desc">
+      <wxParse :content="goods_desc" />
+    </div>
+    <!-- 常见问题 -->
+    <div class="common-problem">
+      <div class="h">
+        <div class="title">常见问题</div>
+      </div>
+      <div class="b">
+        <div class="item" v-for="(item, index) in issueList" :key="index">
+          <div class="question-box">
+            <text class="spot"></text>
+            <text class="question">{{ item.question }}</text>
+          </div>
+          <div class="answer">
+            {{ item.answer }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 大家都在看 -->
+    <div class="common-problem">
+      <div class="h">
+        <div class="title">大家都在看</div>
+      </div>
+      <div class="sublist">
+        <div v-for="(item, index) in productList" :key="index">
+          <img :src="item.list_pic_url" alt="" />
+          <P>{{ item.name }}</P>
+          <p>￥{{item.retail_price}}</p>
+        </div>
+      </div>
+    </div>
     <!-- 选择规格的弹出层 -->
-    
+    <div class="pop" v-show="showpop">
+      <div class="attr-pop" :class="[showpop ? 'fadeup' : 'fadedown']">
+        <div class="top">
+          <div class="left">
+            <img :src="info.primary_pic_url" alt="" />
+          </div>
+          <div class="right">
+            <div>
+              <p>价格￥{{ info.retail_price }}</p>
+              <p>请选择数量</p>
+            </div>
+          </div>
+          <div class="close" @click="showType">x</div>
+        </div>
+        <div class="b">
+          <p>数量</p>
+          <div class="count">
+            <div class="cut" @click="reduce">-</div>
+            <input
+              type="text"
+              class="number"
+              v-model="number"
+              disabled="false"
+            />
+            <div class="add" @click="add">+</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import { get, post } from "../../utils";
+import wxParse from "mpvue-wxparse";
 export default {
   data() {
     return {
@@ -52,7 +125,15 @@ export default {
       info: {},
       brand: {},
       showpop: false,
+      number: 0,
+      attribute: [],
+      goods_desc: "",
+      issueList: [],
+      productList: [],
     };
+  },
+  components: {
+    wxParse,
   },
   //商品分享
   onShareAppMessage() {
@@ -76,13 +157,28 @@ export default {
       console.log(data);
       this.info = data.info;
       this.gallery = data.gallery;
+      this.attribute = data.attribute;
+      this.goods_desc = data.info.goods_desc;
+      this.issueList = data.issue;
+      this.productList = data.productList;
     },
     showType() {
       this.showpop = !this.showpop;
+    },
+    reduce() {
+      if (this.number > 1) {
+        this.number -= 1;
+      } else {
+        return false;
+      }
+    },
+    add() {
+      this.number += 1;
     },
   },
 };
 </script>
 <style lang="less" scoped>
+@import url("~mpvue-wxparse/src/wxParse.css");
 @import "./style.less";
 </style>
