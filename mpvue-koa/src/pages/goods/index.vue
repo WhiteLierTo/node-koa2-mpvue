@@ -77,10 +77,25 @@
         <div v-for="(item, index) in productList" :key="index">
           <img :src="item.list_pic_url" alt="" />
           <P>{{ item.name }}</P>
-          <p>￥{{item.retail_price}}</p>
+          <p>￥{{ item.retail_price }}</p>
         </div>
       </div>
     </div>
+    <!-- footer -->
+    <div class="bottom-fixed">
+      <div class="collect-box" @click="collect">
+        <div class="collect" :class="[collectFlag ? 'active' : '']"></div>
+      </div>
+      <div class="car-box" @click="toCart">
+        <div class="car">
+          <span>{{ allnumber }}</span>
+          <img src="/static/images/ic_menu_shoping_nor.png" alt="" />
+        </div>
+      </div>
+      <div @click="buy">立即购买</div>
+      <div @click="addCart">加入购物车</div>
+    </div>
+
     <!-- 选择规格的弹出层 -->
     <div class="pop" v-show="showpop">
       <div class="attr-pop" :class="[showpop ? 'fadeup' : 'fadedown']">
@@ -130,6 +145,10 @@ export default {
       goods_desc: "",
       issueList: [],
       productList: [],
+      collectFlag: false,
+      goodsId: "",
+      allnumber: 0,
+      allPrice: 0,
     };
   },
   components: {
@@ -161,6 +180,10 @@ export default {
       this.goods_desc = data.info.goods_desc;
       this.issueList = data.issue;
       this.productList = data.productList;
+      this.goodsId = data.info.id;
+      this.collectFlag = data.collected;
+      this.allnumber = data.allnumber;
+      this.allPrice = data.info.retail_price;
     },
     showType() {
       this.showpop = !this.showpop;
@@ -175,6 +198,48 @@ export default {
     add() {
       this.number += 1;
     },
+    async collect() {
+      this.collectFlag = !this.collectFlag;
+      const data = await post("/collect/addcollect", {
+        openId: this.openId,
+        goodsId: this.goodsId,
+      });
+      console.log(data);
+    },
+    toCart() {
+      wx.switchTab({
+        url: "/pages/cart/main",
+      });
+    },
+    async buy() {
+      if (this.showpop) {
+        if (this.number === 0) {
+          wx.showToast({
+            title: "请选择商品数量",
+            duration: 2000,
+            icon: "none",
+            mask: true,
+            success: (res) => {},
+          });
+          return false;
+        }
+
+        const data = await post("/order/submitAction", {
+          goodsId: this.goodsId,
+          openId: this.openId,
+          allPrice: this.allPrice,
+        });
+        console.log(data);
+        if (data) {
+          wx.navigateTo({
+            url: "/pages/order/main",
+          });
+        }
+      } else {
+        this.showpop = true;
+      }
+    },
+    addCart() {},
   },
 };
 </script>

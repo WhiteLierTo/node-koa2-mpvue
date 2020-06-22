@@ -35,12 +35,45 @@ async function detailAction(ctx) {
       category_id: info[0].category_id,
     })
     .select();
+  //判断是否收藏过
+  const iscollect = await mysql("nideshop_collect")
+    .where({
+      user_id: openId,
+      value_id: goodsId,
+    })
+    .select();
+
+  let collected = false;
+
+  if (iscollect.length > 0) {
+    collected = true;
+  }
+
+  //判断该用户的购物车是否含有此商品
+  const oldNumber = await mysql("nideshop_cart")
+    .where({
+      user_id: openId,
+    })
+    .column("number")
+    .select();
+
+  let allnumber = 0;
+
+  if (oldNumber.length > 0) {
+    for (let i = 0; i < oldNumber.length; i++) {
+      const element = oldNumber[i];
+      allnumber += element.number;
+    }
+  }
+
   ctx.body = {
     info: info[0] || [],
     gallery,
     attribute,
     issue,
     productList,
+    collected,
+    allnumber,
   };
 }
 
