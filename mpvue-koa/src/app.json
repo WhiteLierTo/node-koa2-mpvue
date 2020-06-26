@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/order/main",
     "pages/index/main",
     "pages/logs/main",
     "pages/my/main",
@@ -12,7 +13,8 @@
     "pages/topicdetail/main",
     "pages/search/main",
     "pages/goods/main",
-    "pages/order/main"
+    "pages/addaddress/main",
+    "pages/addressSelect/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
