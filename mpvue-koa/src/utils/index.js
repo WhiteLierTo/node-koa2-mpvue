@@ -20,8 +20,8 @@ export function formatTime(date) {
 
 // ----------------------------请求封装
 
-const host = "http://192.168.1.5:5757/lm";
-// const host = "http://192.168.0.109:5757/lm";
+// const host = "http://192.168.1.5:5757/lm";
+const host = "http://192.168.31.78:5757/lm";
 
 export { host };
 
