@@ -64,7 +64,7 @@
     </div>
     <div class="bottom">
       <div>实付：￥{{ allprice }}</div>
-      <div class="pay">
+      <div class="pay" @click="pay">
         支付
       </div>
     </div>
@@ -115,6 +115,15 @@ export default {
       }
 
       console.log(data);
+    },
+    pay() {
+      wx.showToast({
+        title: "支付功能暂未开发",
+        icon: "none",
+        duration: 1500,
+        mask: false,
+        success: (res) => {},
+      });
     },
   },
 };
