@@ -65,6 +65,20 @@ async function addCart(ctx) {
   };
 }
 
+//获取购物车列表
+async function cartList(ctx) {
+  const openId = ctx.query.openId;
+  const cartList = await mysql("nideshop_cart")
+    .where({
+      user_id: openId,
+    })
+    .select();
+  ctx.body = {
+    data: cartList,
+  };
+}
+
 module.exports = {
   addCart,
+  cartList,
 };

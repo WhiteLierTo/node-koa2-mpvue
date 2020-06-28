@@ -88,6 +88,7 @@ export default {
       this.addressId = wx.getStorageSync("addressId");
     }
     this.openId = getStorageOpenid();
+    this.allprice = "";
     this.getDetail();
   },
   methods: {
@@ -110,7 +111,8 @@ export default {
         this.listData = data.goodsList;
         this.address = data.address;
         this.listData.map((item) => {
-          this.allprice += item.retail_price * item.number;
+          this.allprice =
+            Number(item.retail_price * item.number) + Number(this.allprice);
         });
       }
 

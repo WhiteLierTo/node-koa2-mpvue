@@ -80,6 +80,7 @@ async function detailAction (ctx) {
   }
 }
 
+
 module.exports = {
   submitAction,
   detailAction,
