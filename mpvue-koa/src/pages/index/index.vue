@@ -236,7 +236,6 @@ export default {
       this.hotGoods = data.hotGoods;
       this.topiclist = data.topiclist;
       this.newCategoryList = data.newCategoryList;
-      console.log(data);
     },
     toSearch() {
       wx.navigateTo({
@@ -245,7 +244,7 @@ export default {
     },
     categroyList(id) {
       wx.navigateTo({
-        url: "/pages/categroylist/main?id=" + id,
+        url: "/pages/categroyList/main?id=" + id,
       });
     },
     branddetail(id) {

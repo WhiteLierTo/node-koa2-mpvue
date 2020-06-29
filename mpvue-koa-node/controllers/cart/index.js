@@ -8,7 +8,6 @@ async function addCart(ctx) {
   const haveGoods = await mysql("nideshop_cart")
     .where({
       user_id: openId,
-
       goods_id: goodsId,
     })
     .select();

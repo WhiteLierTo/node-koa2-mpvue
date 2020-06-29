@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/main",
     "pages/logs/main",
+    "pages/categroyList/main",
     "pages/my/main",
     "pages/cart/main",
     "pages/project/main",

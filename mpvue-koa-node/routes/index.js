@@ -7,6 +7,9 @@ const controllers = require("../controllers");
 //首页相关的接口
 router.get("/index/index", controllers.home.index);
 
+//分类相关的接口
+router.get("/category/categoryNav", controllers.category.index.categoryNav);
+
 //搜索相关的接口
 router.get("/search/indexaction", controllers.search.index.indexAction);
 router.post(
@@ -21,6 +24,7 @@ router.get("search/helperaction", controllers.search.index.helperAction); //搜�
 
 //商品详情
 router.get("/goods/detailaction", controllers.goods.index.detailAction);
+router.get("/goods/goodsList", controllers.goods.index.goodsList);
 
 //收藏相关的接口
 router.post("/collect/addcollect", controllers.collect.index.addCollect);
