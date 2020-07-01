@@ -5,7 +5,6 @@
     "pages/categroyList/main",
     "pages/my/main",
     "pages/cart/main",
-    "pages/project/main",
     "pages/classify/main",
     "pages/mappage/main",
     "pages/brandlist/main",
@@ -15,13 +14,15 @@
     "pages/goods/main",
     "pages/addaddress/main",
     "pages/addressSelect/main",
-    "pages/order/main"
+    "pages/order/main",
+    "pages/topic/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "网易严选",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "color": "#515151",
@@ -36,7 +37,7 @@
       },
       {
         "text": "专题",
-        "pagePath": "pages/project/main",
+        "pagePath": "pages/topic/main",
         "iconPath": "static/tabs/project.png",
         "selectedIconPath": "static/tabs/project-active.png"
       },

@@ -42,4 +42,7 @@ router.get("/address/getListAction", controllers.address.index.getListAction);
 router.get("/address/detailAction", controllers.address.index.detailAction);
 router.post("/address/saveAction", controllers.address.index.saveAction);
 
+//专题有关接口
+router.get("/topic/listaciotn", controllers.topic.index.listAction);
+
 module.exports = router;
