@@ -1,7 +1,11 @@
 <template>
   <div class="topic">
     <ul class="list">
-      <li v-for="(item, index) in topicList" :key="index">
+      <li
+        v-for="(item, index) in topicList"
+        :key="index"
+        @click="topicDetail(item.id)"
+      >
         <div class="t-img">
           <img :src="item.scene_pic_url" alt="" />
         </div>
@@ -49,10 +53,16 @@ export default {
       if (first) {
         this.topicList = data.data;
       } else {
-        this.topicList = this.topicList.concat(data.data);
+        // this.topicList = this.topicList.concat(data.data);
+        this.topicList = [...this.topicList, ...data.data];
       }
 
       this.total = data.total;
+    },
+    topicDetail(id) {
+      wx.navigateTo({
+        url: "/pages/topicdetail/main?id=" + id,
+      });
     },
   },
 };

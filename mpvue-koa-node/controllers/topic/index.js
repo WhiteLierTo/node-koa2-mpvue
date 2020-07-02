@@ -18,7 +18,27 @@ async function listAction(ctx) {
     data,
   };
 }
+async function detailAction(ctx) {
+  const id = ctx.query.id;
+  let data = [];
+  if (id) {
+    data = await mysql("nideshop_topic")
+      .where({
+        id: id,
+      })
+      .select();
+  }
+  const recommendList = await mysql("nideshop_topic")
+    .column("id", "title", "price_info", "subtitle", "scene_pic_url")
+    .limit(4)
+    .select();
+  ctx.body = {
+    data: data[0],
+    recommendList,
+  };
+}
 
 module.exports = {
   listAction,
+  detailAction,
 };

@@ -44,5 +44,7 @@ router.post("/address/saveAction", controllers.address.index.saveAction);
 
 //专题有关接口
 router.get("/topic/listaciotn", controllers.topic.index.listAction);
+router.get("/topic/detailaction", controllers.topic.index.detailAction);
+
 
 module.exports = router;
